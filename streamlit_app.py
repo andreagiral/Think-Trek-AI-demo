@@ -14,14 +14,14 @@ if "authenticated" not in st.session_state:
 # Login form
 if not st.session_state["authenticated"]:
     st.title("🔐 Think-Trek AI Login")
-    user = st.text_input("Username")
+    username = st.text_input("Username")
     pwd = st.text_input("Password", type="password")
 
     if st.button("Login"):
-        if users.get(user) == pwd:
+        if users.get(username) == pwd:
             st.session_state["authenticated"] = True
-            st.session_state["role"] = "prof" if user == "prof" else "student"
-            st.success(f"Logged in as {user}")
+            st.session_state["role"] = username
+            st.success(f"Logged in as {username}")
             st.rerun()
         else:
             st.error("Invalid login")
@@ -37,7 +37,7 @@ if st.session_state["authenticated"]:
         st.rerun()
 
     # Instructor view
-    if role == "prof":
+    if role == "instructor":
         st.title("📊 Think-Trek AI - Instructor Dashboard")
 
         conn = sqlite3.connect("thinktrek_logs.db")
