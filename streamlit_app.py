@@ -4,7 +4,7 @@ import sqlite3
 import requests
 
 # Hardcoded users - can later move to a secure database or use Streamlit Auth if needed
-users = {"prof": "teach123", "student": "learn123"}
+users = {"instructor": "teach123", "student": "learn123"}
 
 # Use session_state to persist login info
 if "authenticated" not in st.session_state:
