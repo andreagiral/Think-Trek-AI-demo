@@ -2,6 +2,21 @@ import streamlit as st
 import pandas as pd
 import sqlite3
 import requests
+import boto3
+
+def download_db_from_s3():
+    s3 = boto3.client("s3")
+    try:
+        s3.download_file("thinktrek-openstax", "logs/thinktrek_logs.db", "thinktrek_logs.db")
+    except Exception as e:
+        st.error("Could not load latest log data.")
+        st.stop()
+
+download_db_from_s3()
+
+conn = sqlite3.connect("thinktrek_logs.db")
+df = pd.read_sql_query("SELECT * FROM chat_logs", conn)
+conn.close()
 
 # Hardcoded users - can later move to a secure database or use Streamlit Auth if needed
 users = {"instructor": "teach123", "student": "learn123"}
@@ -100,5 +115,3 @@ if st.session_state["authenticated"]:
 
             with st.chat_message("assistant"):
                 st.markdown(bot_reply)
-
-
